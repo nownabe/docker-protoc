@@ -5,6 +5,7 @@ LABEL maintainer "nownabe"
 ARG protoc_version=3.6.1
 ARG go_version=1.11.4
 ARG go_sha256=fb26c30e6a04ad937bbc657a1b5bba92f80096af1e8ee6da6430c045a8db3a5b
+ARG grpc_web_version=1.0.3
 
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -35,6 +36,9 @@ RUN apt-get update \
   && mkdir -p $GOPATH/src GOPATH/bin \
   && go get -u google.golang.org/grpc \
   && go get -u github.com/golang/protobuf/protoc-gen-go \
+  && : ================ Install gRPC-web ================ \
+  && curl -SsL -o /usr/local/bin/protoc-gen-grpc-web https://github.com/grpc/grpc-web/releases/download/${grpc_web_version}/protoc-gen-grpc-web-${grpc_web_version}-linux-x86_64 \
+  && chmod +x /usr/local/bin/protoc-gen-grpc-web \
   && : ================ Clean up ================ \
   && apt-get remove -y ${build_deps} \
   && apt-get clean \
